@@ -71,10 +71,9 @@ jobs:
           name: package
 
       - name: Publish to npm registry
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_AUTH_TOKEN }}
-          access: public
+        run: npm publish
+        env: 
+          NODE_AUTH_TOKEN:  ${{ secrets.NPM_AUTH_TOKEN }}
 
       - name: Generate changelog
         run: npx auto-changelog --package
