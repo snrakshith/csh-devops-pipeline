@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -17,31 +17,68 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
+      - name: Build and test
+        run: npm run build && npm test
 
-      - name: Build
-        run: npm run build
+  package:
+    needs: build
+    runs-on: ubuntu-latest
 
-      - name: Package and Publish to npm
-        run: |
-          npm pack
-          npm publish --access public
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Generate Changelog
-        uses: release-drafter/release-drafter@v5.21.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          config: .github/release-drafter.yml
+          node-version: 16
 
-      - name: Create Git Tag Release
-        uses: actions/create-release@v1
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Package
+        run: npm pack
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ${{ steps.generate_changelog.outputs.changelog }}
+          name: package
+          path: "*.tgz"
+
+  release:
+    needs: package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download package artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: package
+
+      - name: Publish to npm registry
+        uses: js-actions/npm@v1
+        with:
+          args: publish *.tgz --access public
+
+      - name: Generate changelog
+        run: npx auto-changelog --package
+
+      - name: Create git tag
+        run: git tag v${{ steps.get_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
