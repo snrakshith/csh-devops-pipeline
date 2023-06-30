@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Install dependencies
         run: npm ci
@@ -34,7 +34,7 @@ jobs:
           npm publish --access public
 
       - name: Generate Changelog
-        uses: release-drafter/release-drafter@v7
+        uses: release-drafter/release-drafter@v5.21.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: .github/release-drafter.yml
