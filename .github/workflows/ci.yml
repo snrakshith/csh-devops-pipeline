@@ -30,7 +30,6 @@ jobs:
 
       - name: Package and Publish to npm
         run: |
-          echo "//registry.npmjs.org/:_authToken=\${{ secrets.NPM_AUTH_TOKEN }}" > .npmrc
           npm pack
           npm publish --access public
 
