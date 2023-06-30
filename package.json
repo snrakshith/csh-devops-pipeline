@@ -3,11 +3,20 @@
   "version": "0.0.1",
   "description": "POC for node.js csh devops pipeline",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "keywords": [
     "Microservices",
-    "Chassis framework","devops","pipeline"
+    "Chassis framework",
+    "devops",
+    "pipeline"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snrakshith/csh-devops-pipeline.git"
+  },
   "scripts": {
     "start": "nodemon ./index.js",
     "test": "echo Running tests",
