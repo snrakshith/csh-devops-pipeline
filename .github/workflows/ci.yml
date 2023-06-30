@@ -71,9 +71,10 @@ jobs:
           name: package
 
       - name: Publish to npm registry
-        uses: js-actions/npm@v1
+        uses: JS-DevTools/npm-publish@v1
         with:
-          args: publish *.tgz --access public
+          token: ${{ secrets.NPM_AUTH_TOKEN }}
+          access: public
 
       - name: Generate changelog
         run: npx auto-changelog --package
