@@ -87,7 +87,38 @@ jobs:
       - name: Generate changelog
         run: npx auto-changelog --package
 
+      - name: Get version
+        id: get_version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+
       - name: Create git tag
         run: git tag v${{ steps.get_version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine release type
+        id: determine_release_type
+        run: |
+          if [[ "${{ github.ref }}" == "refs/tags/v"* ]]; then
+            echo "::set-output name=release_type::patch"
+          elif [[ "${{ github.ref }}" == "refs/heads/release/major" ]]; then
+            echo "::set-output name=release_type::major"
+          elif [[ "${{ github.ref }}" == "refs/heads/release/minor" ]]; then
+            echo "::set-output name=release_type::minor"
+          fi
+
+      - name: Increment version
+        run: npm version ${{ steps.determine_release_type.outputs.release_type }}
+
+      # - name: Increment version
+      #   run: npm version patch -m "Bump version to %s"
+
+      - name: Push changes
+        run: |
+          git config user.name "snrakshith"
+          git config user.email "snrakshith.97@gmail.com"
+          git push --follow-tags
+
+      - name: Send release status via email
+        run: echo "Release successful! Version: ${{ steps.get_version.outputs.version }}" | mail -s "Release Status - Success" snrakshith.97@gmail.com
+
