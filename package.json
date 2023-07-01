@@ -1,6 +1,6 @@
 {
   "name": "csh-devops-pipeline",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "POC for node.js csh devops pipeline",
   "main": "index.js",
   "type": "module",
