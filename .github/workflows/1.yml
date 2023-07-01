@@ -53,8 +53,8 @@ jobs:
 
       - name: Scan Docker image with Trivy
         run: |
-          docker pull aquasec/trivy
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image myapp:latest
+          docker pull aquasec/trivy:0.9.0
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/tmp/.cache/ aquasec/trivy:0.9.0 image myapp:latest
 
       - name: Log Trivy results
         run: cat trivy.log
