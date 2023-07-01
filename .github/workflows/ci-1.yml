@@ -118,6 +118,4 @@ jobs:
           git config user.email "snrakshith.97@gmail.com"
           git push --follow-tags
 
-      - name: Send release status via email
-        run: echo "Release successful! Version: ${{ steps.get_version.outputs.version }}" | mail -s "Release Status - Success" snrakshith.97@gmail.com
-
+     
