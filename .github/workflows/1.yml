@@ -53,8 +53,11 @@ jobs:
 
       - name: Scan Docker image with Trivy
         run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
-          docker run --rm -v $(pwd):/mnt aquasec/trivy:latest --exit-code 0 --no-progress ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+          docker pull aquasec/trivy
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image myapp:latest
+
+      - name: Log Trivy results
+        run: cat trivy.log
 
       - name: Publish to Docker Hub
         run: |
