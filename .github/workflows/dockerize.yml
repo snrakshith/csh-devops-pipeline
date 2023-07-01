@@ -36,7 +36,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build Docker image
-        run: docker build --file Dockerfile --tag myapp:latest .
+        run: docker build --file /node-devops-pipeline/Dockerfile --tag myapp:latest .
 
       - name: Scan Docker image with Trivy
         run: |
