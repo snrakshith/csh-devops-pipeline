@@ -2,8 +2,7 @@
   "name": "csh-devops-pipeline",
   "version": "0.0.5",
   "description": "POC for node.js csh devops pipeline",
-  "main": "index.js",
-  "type": "module",
+  "main": "./src/index.ts",
   "keywords": [
     "Microservices",
     "Chassis framework",
@@ -18,9 +17,10 @@
     "url": "git://github.com/snrakshith/csh-devops-pipeline.git"
   },
   "scripts": {
-    "start": "nodemon ./index.js",
+    "dev": "ts-node-dev --poll src/index.ts",
+    "build": "rimraf ./dist && tsc",
+    "start": "npm run build && node dist/index.js",
     "test": "echo Running tests",
-    "build": "echo Building the app...",
     "lint": "echo linting the app..",
     "changelog": "npx auto-changelog --package",
     "release:minor": "npm version minor -m \"Minor bump version to %s\"&&git add CHANGELOG.md",
@@ -30,8 +30,12 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
-    "mongodb": "^5.6.0",
-    "mongoose": "^7.2.2",
-    "nodemon": "^2.0.22"
+    "mongoose": "^7.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "rimraf": "^5.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.1.6"
   }
 }

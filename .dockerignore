@@ -1,5 +1,7 @@
 /node_modules
 /devops
+Dockerfile
+.dockerignore
 .github
 LICENSE
 CHANGELOG.md
