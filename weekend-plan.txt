@@ -1,2 +1,0 @@
-
-csh-mfe-template
