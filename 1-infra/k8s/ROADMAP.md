@@ -4,6 +4,7 @@
 
 # Terms
 
+    - Namespace
     - DeamonSets
     - ReplicaSets
     - ConfigMaps & Secrets
