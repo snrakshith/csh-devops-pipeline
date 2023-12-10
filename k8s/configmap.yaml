@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-v1
+data:
+  BG_COLOR: "#12181b"
+  FONT_COLOR: "#FFFFFF"
+  Custom_Header: "From the configmap"
